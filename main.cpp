@@ -31,11 +31,7 @@ public:
   CDnsSeedOpts() : nThreads(96), nDnsThreads(4), nPort(53), mbox(NULL), ns(NULL), host(NULL), tor(NULL), fUseTestNet(false), fWipeBan(false), fWipeIgnore(false) {}
 
   void ParseCommandLine(int argc, char **argv) {
-<<<<<<< HEAD
     static const char *help = "nubits-seeder\n"
-=======
-    static const char *help = "ppcoin-seeder\n"
->>>>>>> c2f063f483bf6bff4f85ddfdb0577af0d4e2f380
                               "Usage: %s -h <host> -n <ns> [-m <mbox>] [-t <threads>] [-p <port>]\n"
                               "\n"
                               "Options:\n"
@@ -347,28 +343,16 @@ extern "C" void* ThreadStats(void*) {
 }
 
 static const string mainnet_seeds[] = {
-<<<<<<< HEAD
         "212.114.48.31",
         "85.214.145.24",
         ""};
 
 static const string testnet_seeds[] = {"212.114.48.31", "85.214.145.24"};
-=======
-        "62.210.141.185",
-        "seed.ppcoin.net",
-        ""};
-
-static const string testnet_seeds[] = {"seed.ppcoin.org", ""};
->>>>>>> c2f063f483bf6bff4f85ddfdb0577af0d4e2f380
 static const string *seeds = mainnet_seeds;
 
 extern "C" void* ThreadSeeder(void*) {
   if (!fTestNet){
-<<<<<<< HEAD
     db.Add(CService("toBeImplemented.onion", 7890), true);
-=======
-    db.Add(CService("toBeImplemented.onion", 9901), true);
->>>>>>> c2f063f483bf6bff4f85ddfdb0577af0d4e2f380
   }
   do {
     for (int i=0; seeds[i] != ""; i++) {

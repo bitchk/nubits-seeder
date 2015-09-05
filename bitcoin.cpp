@@ -80,11 +80,7 @@ class CNode {
     CAddress me(CService("0.0.0.0"));
     BeginMessage("version");
     int nBestHeight = GetRequireHeight();
-<<<<<<< HEAD
     string ver = "/nubits-seeder:0.1.0/";
-=======
-    string ver = "/ppcoin-seeder:0.1.0/";
->>>>>>> c2f063f483bf6bff4f85ddfdb0577af0d4e2f380
     vSend << PROTOCOL_VERSION << nLocalServices << nTime << you << me << nLocalNonce << ver << nBestHeight;
     EndMessage();
   }
