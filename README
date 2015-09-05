@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 nubits-seeder
 ===============
 
 nubits-seeder is a crawler for the nubits network, which exposes a list
+=======
+ppcoin-seeder
+===============
+
+ppcoin-seeder is a crawler for the ppcoin network, which exposes a list
+>>>>>>> c2f063f483bf6bff4f85ddfdb0577af0d4e2f380
 of reliable nodes via a built-in DNS server.
 
 Features:

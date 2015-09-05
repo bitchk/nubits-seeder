@@ -60,7 +60,11 @@ class CDataStream;
 class CAutoFile;
 static const unsigned int MAX_SIZE = 0x02000000;
 
+<<<<<<< HEAD
 static const int PROTOCOL_VERSION = 2000000;
+=======
+static const int PROTOCOL_VERSION = 60004;
+>>>>>>> c2f063f483bf6bff4f85ddfdb0577af0d4e2f380
 
 // Used to bypass the rule against non-const reference to temporary
 // where it makes sense with wrappers such as CFlatData or CTxDB
