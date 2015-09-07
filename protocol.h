@@ -79,7 +79,7 @@ class CAddress : public CService
              if (nType & SER_DISK)
                  READWRITE(nVersion);
              if ((nType & SER_DISK) ||
-                 (nVersion >= 31402 && !(nType & SER_GETHASH)))
+                 (nVersion >= 1 && !(nType & SER_GETHASH)))
                  READWRITE(nTime);
              READWRITE(nServices);
              READWRITE(*pip);
