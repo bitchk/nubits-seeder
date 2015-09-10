@@ -130,7 +130,7 @@ else{
 		$ip_edit=$ip_array[$i]["ip"];
 		$good_edit=$ip_array[$i]["good"];
 
-		if ($good_edit == 1) //only re-write the dns entry if good == 1
+		if ($good_edit == 1 && $response_array["response"]["recs"]["objs"][$i]["type"]==$type) //only re-write the dns entry if good == 1 and type = A
 			{
 			$content_edit=$ip_edit;
 			$write_edit = $cf->rec_edit($domain, $type, $id, $name, $content_edit);
