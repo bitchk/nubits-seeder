@@ -35,7 +35,7 @@ else{
 	$response_object = $cf->rec_load_all($domain); //ALL dns entries of domain
 	$response_json=json_encode($response_object); //make objects to JSON
 	$response_array=json_decode($response_json, true); //make JSON to array, thanks php
-	
+
 	if(isset($response_array["err_code"]))
 	{
 		if($response_array["err_code"]=="E_UNAUTH")
@@ -130,7 +130,7 @@ else{
 		$ip_edit=$ip_array[$i]["ip"];
 		$good_edit=$ip_array[$i]["good"];
 
-		if ($good_edit == 1 && $response_array["response"]["recs"]["objs"][$i]["type"]==$type) //only re-write the dns entry if good == 1 and type = A
+		if ($good_edit == 1 && $response_array["response"]["recs"]["objs"][$i]["type"]==$type && $response_array["response"]["recs"]["objs"][$i]["name"] == "$name.$domain") //only re-write the dns entry if good == 1 and type = A and domain name = $name.$domain
 			{
 			$content_edit=$ip_edit;
 			$write_edit = $cf->rec_edit($domain, $type, $id, $name, $content_edit);
