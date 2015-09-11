@@ -1,7 +1,7 @@
-ppcoin-seeder
+nubits-seeder
 ===============
 
-ppcoin-seeder is a crawler for the ppcoin network, which exposes a list
+nubits-seeder is a crawler for the nubits network, which exposes a list
 of reliable nodes via a built-in DNS server.
 
 Features:
