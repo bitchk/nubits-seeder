@@ -58,23 +58,29 @@ else{
 		$ip_array_line = $ip_raw[$i2]; //read line 
 		$ip_array_split = explode(":",$ip_array_line); //explode string at ":"
 		$ip = $ip_array_split[0]; // [0] is the ip address of the line
-
-		$ip_array_split = str_replace("7890", "", $ip_array_split[1]); //remove port
-		$ip_array_split = trim($ip_array_split); //remove spaces at the start
-		$ip_array_split = substr($ip_array_split,0,1); //get first charakter == the GOOD parameter in the dump file /
-		$good =  $ip_array_split;
-	
-		$ip_array_while = array(
-		'ip' => $ip,
-		'good' => $good	
-		);
-	
-		if ($good==1){
-			array_push($ip_array, $ip_array_while);
-		}
 		
+		$pos = strpos($ip_array_split[1], "7890"); //position of 7890
+		$bool_pos=is_bool($pos); //custom ports (!= 7890) not allowed.
+		
+		if (!$bool_pos) {
+			$ip_array_split = str_replace("7890", "", $ip_array_split[1]); //remove port
+			$ip_array_split = trim($ip_array_split); //remove spaces at the start
+			$ip_array_split = substr($ip_array_split,0,1); //get first charakter == the GOOD parameter in the dump file /
+			$good =  $ip_array_split;
+	
+			$ip_array_while = array(
+			'ip' => $ip,
+			'good' => $good	
+			);
+	
+			if ($good==1){
+				array_push($ip_array, $ip_array_while);
+			}
+		}
 		$i2++;
+		
 	}
+	print_r($ip_array);
 	
 // how many ips in list? are ips available? 
 	$ip_array_available = count ($ip_array);
@@ -93,7 +99,7 @@ else{
 			$id_zone=$response_array["response"]["recs"]["objs"][$i3]["rec_id"];
 			$ip_zone=$response_array["response"]["recs"]["objs"][$i3]["content"];
 			
-			$dns_zone_array_while = array(
+			$dns_zone_array_while = array( //write those matching dns records into an array
 			'id' => $id_zone,
 			'ip' => $ip_zone	
 			);
@@ -201,6 +207,7 @@ else{
 						
 						$end = true; // no more IPs available							
 					}			
+					
 					$i6++;			//keep looking for ip
 								 	
 			 }
