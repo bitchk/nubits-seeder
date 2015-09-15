@@ -80,7 +80,6 @@ else{
 		$i2++;
 		
 	}
-	print_r($ip_array);
 	
 // how many ips in list? are ips available? 
 	$ip_array_available = count ($ip_array);
