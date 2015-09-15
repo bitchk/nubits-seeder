@@ -18,6 +18,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 include_once("class_cloudflare.php"); //include the cloudflare php API by vexxhost
 
 $type = "A"; //set A records only
+$i6 = 0; //counter
 $i5 = 0; //counter
 $i4 = 0; //counter
 $i3 = 0; //counter
@@ -28,6 +29,7 @@ $ips_used = 0; //
 $i_offset = 0; //
 $end = false; //
 $ip_array=array();
+$dns_zone_array=array();
 
 if (!file_exists($seed_dump))
 {
@@ -86,7 +88,17 @@ else{
 	{
 		if($response_array["response"]["recs"]["objs"][$i3]["name"] == "$name.$domain" && $response_array["response"]["recs"]["objs"][$i3]["type"]==$type)
 		 {
-			$entries++;
+			$entries++; //entries with record type A and $name.$domain
+			
+			$id_zone=$response_array["response"]["recs"]["objs"][$i3]["rec_id"];
+			$ip_zone=$response_array["response"]["recs"]["objs"][$i3]["content"];
+			
+			$dns_zone_array_while = array(
+			'id' => $id_zone,
+			'ip' => $ip_zone	
+			);
+			
+			array_push($dns_zone_array, $dns_zone_array_while);
 		 }
 	$i3++;
 	}
@@ -151,31 +163,49 @@ else{
 	 
 
 //make CF edits
-$end = false; 
-	while ($i<=$number_of_records && $end==false)
+
+	while ($i<$entries)
 	{
-		$number_of_records=$number_of_records-$number_of_records_solved;	
-				
-		$id=$response_array["response"]["recs"]["objs"][$i+$i_offset]["rec_id"]; //get the DNS table row 
-		 
-		$ip_edit=$ip_array[$ips_used]["ip"];
-		$good_edit=$ip_array[$ips_used]["good"];
-		if ($good_edit == 1 && $response_array["response"]["recs"]["objs"][$i]["type"]==$type && $response_array["response"]["recs"]["objs"][$i]["name"] == "$name.$domain") //only re-write the dns entry if good == 1 and type = A and domain name = $name.$domain
-			{	
-			$content_edit = $ip_edit;
-			$write_edit = $cf->rec_edit($domain, $type, $id, $name, $content_edit);
-			$number_of_records_solved++; //one less to edit
-			$ips_used++; //move ip list pointer
-			$i_offset++; //move $i_offset
-			}
-		else {
-			if ($ips_used>$ip_array_available)	//no more IPs left in list 		
-				{ 
-				$end=true;
-				}
+		$end = false;  //reset end
+		$id_entry=$dns_zone_array[$i]["id"];
+		$ip_entry=$dns_zone_array[$i]["ip"];
+		$hit=array_search($ip_entry, array_column($ip_array, 'ip')); //search for dns zone rec ip in ip_array tale
+		
+		if(is_numeric($hit) && $hit>=0) //we have a hit
+		{
+			//do nothing, it's good. 
+		}
+		
+		else { ///we don't have a hit, the IP in the dns zone rec is not in the current good ip list and needs to be altered
+			//find IP that is in good ip list but not in the current dns zone rec
 			
-			$i++;
-			}
-	}
+			while($end==false)
+			 {
+			 		$ip_search=$ip_array[$i6]["ip"]; //get  $i6 in ip list ($i6 will start at 0 and will be incremented on fail)
+					$hit_search_dns=array_search($ip_search, array_column($dns_zone_array, 'ip')); // search that IP in DNS array
+					
+					if ($hit_search_dns == false) //boolean false could also mean it hit entry 0 here
+					{
+						$dns_bool=is_bool($hit_search_dns); //so we check if it's a real bool 
+						
+							if ($dns_bool) //it's a bool and it is false? we have found a IP in the good ip list which is not in the DNS array!
+							{
+							$write_edit = $cf->rec_edit($domain, $type, $id_entry, $name, $ip_search); //write it
+							$end = true; //stop searching
+							}
+										
+					}
+					
+					if($i6>$ip_array_available)
+					{
+						
+						$end = true; // no more IPs available							
+					}			
+					$i6++;			//keep looking for ip
+								 	
+			 }
+		}
+		$i++;
+	}	
 }
 ?>
