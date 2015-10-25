@@ -166,7 +166,6 @@ else{
 		}
 	}
 	 
-echo "diff: $difference - n of rec: $number_of_records - entries: $entries - ipsav: $ip_array_available \n " ;
 //make CF edits
 
 	while ($i<$entries)
