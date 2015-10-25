@@ -1,5 +1,4 @@
 <?php
-
 $domain ="domain.com";
 $name = "nuseed"; //subdomain e.g. name.domain.com 
 $number_of_records = 10; //maximum n A records with $name... 10 recommended 
@@ -110,7 +109,7 @@ else{
 
 //create needed entries if $entries differs from $number_of_records (initial create of zone file)
 
-	$difference=$number_of_records-$entries;
+	$difference=$number_of_records-$entries-($number_of_records-$ip_array_available);
 	while($i4 < $difference)
 	{
 		$ip_new=$ip_array[$i5]["ip"];
@@ -159,6 +158,7 @@ else{
 	if($response_array["response"]["recs"]["objs"][$diff_rev]["type"]==$type && $response_array["response"]["recs"]["objs"][$diff_rev]["name"] == "$name.$domain")
 	{
 		$delete=$cf->delete_dns_record($domain, $id_diff);
+		echo "\n delete";
 		$difference++;
 	}
 	else {
@@ -166,7 +166,7 @@ else{
 		}
 	}
 	 
-
+echo "diff: $difference - n of rec: $number_of_records - entries: $entries - ipsav: $ip_array_available \n " ;
 //make CF edits
 
 	while ($i<$entries)
