@@ -29,6 +29,7 @@ $i_offset = 0; //
 $end = false; //
 $ip_array=array();
 $dns_zone_array=array();
+$difference = 0;
 
 if (!file_exists($seed_dump))
 {
@@ -108,8 +109,23 @@ else{
 	}
 
 //create needed entries if $entries differs from $number_of_records (initial create of zone file)
+	if($number_of_records<=$entries)
+	{	
+	$difference=$number_of_records-$entries;
+	}
 
-	$difference=$number_of_records-$entries-($number_of_records-$ip_array_available);
+	if($entries<$number_of_records)
+	{	
+	$difference=$number_of_records-$entries;
+	}
+	
+	if($number_of_records>$ip_array_available)
+	{
+	$difference=$number_of_records-$entries-($number_of_records-$ip_array_available);	
+	}
+	
+echo "diff: $difference - n of rec: $number_of_records - entries: $entries - ipsav: $ip_array_available \n " ;
+
 	while($i4 < $difference)
 	{
 		$ip_new=$ip_array[$i5]["ip"];
@@ -147,7 +163,9 @@ else{
 		$i5++; //move file pointer!		
 		$i4++; //check next missing element
 	}
-	
+
+
+
 //to many entries? delete!
 
 	while($difference < 0)
@@ -158,7 +176,6 @@ else{
 	if($response_array["response"]["recs"]["objs"][$diff_rev]["type"]==$type && $response_array["response"]["recs"]["objs"][$diff_rev]["name"] == "$name.$domain")
 	{
 		$delete=$cf->delete_dns_record($domain, $id_diff);
-		echo "\n delete";
 		$difference++;
 	}
 	else {
