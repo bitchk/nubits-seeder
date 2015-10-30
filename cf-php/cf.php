@@ -123,8 +123,6 @@ else{
 	{
 	$difference=$number_of_records-$entries-($number_of_records-$ip_array_available);	
 	}
-	
-echo "diff: $difference - n of rec: $number_of_records - entries: $entries - ipsav: $ip_array_available \n " ;
 
 	while($i4 < $difference)
 	{
@@ -163,8 +161,6 @@ echo "diff: $difference - n of rec: $number_of_records - entries: $entries - ips
 		$i5++; //move file pointer!		
 		$i4++; //check next missing element
 	}
-
-
 
 //to many entries? delete!
 
