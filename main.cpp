@@ -344,10 +344,12 @@ extern "C" void* ThreadStats(void*) {
 
 static const string mainnet_seeds[] = {
         "212.114.48.31",
-        "85.214.145.24",
+	"78.47.79.252", 
+	"176.9.16.102",
+	"78.46.220.171",
         ""};
 
-static const string testnet_seeds[] = {"212.114.48.31", "85.214.145.24"};
+static const string testnet_seeds[] = {"212.114.48.31"};
 static const string *seeds = mainnet_seeds;
 
 extern "C" void* ThreadSeeder(void*) {
